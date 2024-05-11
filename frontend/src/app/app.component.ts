@@ -15,13 +15,20 @@ export class AppComponent {
 
   constructor(private router:Router){}
 
-  ngOnInit(){
+  ngOnInit() {
     this.router.events.subscribe(event => {
-      if(event.constructor.name === "NavigationEnd"){
-        this.isUserLoggedIn = StorageService.isUserLoggedIn();
-        this.isAdminLoggedIn = StorageService.isAdminLoggedIn();
+      if (event.constructor.name === "NavigationEnd") {
+        this.checkLoginStatus();
       }
-    })
+    });
+  }
+
+  checkLoginStatus() {
+    this.isUserLoggedIn = StorageService.isUserLoggedIn();
+    this.isAdminLoggedIn = StorageService.isAdminLoggedIn();
+    if (!this.isUserLoggedIn && !this.isAdminLoggedIn) {
+      this.router.navigateByUrl('/login');
+    }
   }
 
   logout(){

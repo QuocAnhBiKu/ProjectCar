@@ -41,7 +41,7 @@ export class LoginComponent {
         if(StorageService.isAdminLoggedIn()){
           this.router.navigateByUrl("admin/dashboard");
         } else if (StorageService.isUserLoggedIn()){
-          this.router.navigateByUrl("/user/dashboard");
+          this.router.navigateByUrl("/customer/dashboard");
         } else{
           this.message.error("Bad credentials",{ nzDuration:50000});
         }

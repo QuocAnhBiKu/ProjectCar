@@ -22,6 +22,13 @@ export class StorageService {
   static getToken(){
     return window.localStorage.getItem(TOKEN);
   }
+  static getUserId(): string {
+    const user = this.getUser();
+    if(user == null){
+      return "";
+    }
+    return user.id;
+  }
 
   static getUser(): any{
     const userStr = localStorage.getItem(USER);
