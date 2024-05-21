@@ -28,25 +28,40 @@ export class LoginComponent {
     })
   }
 
-  login(){
-    this.authService.login(this.loginForm.value).subscribe((res) =>{
-      console.log(res);
-      if(res.userId != null){
-        const user = {
-          id: res.userId,
-          role: res.userRole
-        };
-        StorageService.saveUser(user);
-        StorageService.saveToken(res.jwt);
-        if(StorageService.isAdminLoggedIn()){
-          this.router.navigateByUrl("admin/dashboard");
-        } else if (StorageService.isUserLoggedIn()){
-          this.router.navigateByUrl("/customer/dashboard");
-        } else{
-          this.message.error("Bad credentials",{ nzDuration:50000});
+  login() {
+    this.isSpinning = true;
+  
+    try {
+      this.authService.login(this.loginForm.value).subscribe(
+        (res) => {
+          console.log(res);
+          if (res.userId != null) {
+            const user = {
+              id: res.userId,
+              role: res.userRole
+            };
+            StorageService.saveUser(user);
+            StorageService.saveToken(res.jwt);
+            if (StorageService.isAdminLoggedIn()) {
+              this.router.navigateByUrl("admin/dashboard");
+            } else if (StorageService.isUserLoggedIn()) {
+              this.router.navigateByUrl("/customer/dashboard");
+            }
+          } else {
+            this.message.error("Invalid email or password", { nzDuration: 5000 });
+          }
+        },
+        (error) => {
+          // Xử lý lỗi từ yêu cầu HTTP
+          this.message.error("Invalid email or password", { nzDuration: 5000 });
+          this.isSpinning = false;
         }
-      }
-    })
+      );
+    } catch (error : any) {
+      // Xử lý ngoại lệ khác
+      this.message.error(error.message, { nzDuration: 5000 });
+      this.isSpinning = false;
+    }
   }
 
 }

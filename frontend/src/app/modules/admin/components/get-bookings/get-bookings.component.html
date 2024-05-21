@@ -14,7 +14,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let booking of basicTable.data">
-                <td>{{ booking.username }}</td>
+                <td>{{ booking.userName }}</td>
                 <td>{{ booking.email}}</td>
                 <td>{{ booking.fromDate ? (booking.fromDate | date:'MMM d,y') : '' }}</td>
                 <td>{{ booking.toDate ? (booking.toDate | date:'MMM d,y') : '' }}</td>

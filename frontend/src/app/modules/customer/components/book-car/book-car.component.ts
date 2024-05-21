@@ -44,13 +44,13 @@ export class BookCarComponent{
   bookACar(data: any) {
     console.log(data);
     this.isSpinning = true;
-    let bookAcarFto = {
-      toDate: data.toDate.getTime(), // Chuyển đổi sang Unix timestamp
-      fromDate: data.fromDate.getTime(), // Chuyển đổi sang Unix timestamp
+    let bookAcarDto = {
+      toDate: data.toDate.toISOString(), // Chuyển đổi thành chuỗi định dạng ISO 8601
+      fromDate: data.fromDate.toISOString(), // Chuyển đổi thành chuỗi định dạng ISO 8601
       userId: StorageService.getUserId(),
       carId: this.carId
     }
-    this.customerService.bookACar(bookAcarFto).subscribe(
+    this.customerService.bookACar(bookAcarDto).subscribe(
       (res) => {
         console.log(res);
         this.message.success("Booking request submitted successfully", { nzDuration: 5000 });

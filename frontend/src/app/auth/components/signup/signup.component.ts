@@ -37,16 +37,32 @@ export class SignupComponent {
   };
 
   register() {
-    console.log(this.signupForm.value);
-    this.authService.register(this.signupForm.value).subscribe((res) =>{
-      console.log(res);
-      if(res.id != null){
-        this.message.success("Signup successful" , { nzDuration: 5000});
-        this.router.navigateByUrl("/login");
-      }else{
-        this.message.error("Something went wrong", { nzDuration:5000});
-      }
-    })
+    this.isSpinning = true;
+  
+    try {
+      this.authService.register(this.signupForm.value).subscribe(
+        (res) => {
+          console.log(res);
+          if (res.id != null) {
+            this.message.success("Signup successful", { nzDuration: 5000 });
+            this.router.navigateByUrl("/login");
+          } else if (res.error && res.error.message) {
+            this.message.error(res.error.message, { nzDuration: 5000 });
+          } else {
+            this.message.error("Something went wrong", { nzDuration: 5000 });
+          }
+        },
+        (error) => {
+          // Xử lý lỗi từ yêu cầu HTTP
+          this.message.error("Something went wrong", { nzDuration: 5000 });
+          this.isSpinning = false;
+        }
+      );
+    } catch (error : any) {
+      // Xử lý ngoại lệ khác
+      this.message.error(error.message, { nzDuration: 5000 });
+      this.isSpinning = false;
+    }
   }
 
 }

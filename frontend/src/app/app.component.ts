@@ -18,18 +18,12 @@ export class AppComponent {
   ngOnInit() {
     this.router.events.subscribe(event => {
       if (event.constructor.name === "NavigationEnd") {
-        this.checkLoginStatus();
+        this.isAdminLoggedIn = StorageService.isAdminLoggedIn();
+        this.isUserLoggedIn = StorageService.isUserLoggedIn();
       }
     });
   }
 
-  checkLoginStatus() {
-    this.isUserLoggedIn = StorageService.isUserLoggedIn();
-    this.isAdminLoggedIn = StorageService.isAdminLoggedIn();
-    if (!this.isUserLoggedIn && !this.isAdminLoggedIn) {
-      this.router.navigateByUrl('/login');
-    }
-  }
 
   logout(){
     StorageService.logout();
